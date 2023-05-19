@@ -16,15 +16,14 @@ app.listen(process.env.PORT, () =>
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "100mb" }));
-app.use(express.static(path.join(process.cwd(), "./src/client")));
-app.use(express.static(path.join(process.cwd(), "./uploadimgs")));
 
-app.get("/./uploadimgs/*", (req, res) => {
-  console.log(req.url);
-});
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(process.cwd(), "./src/client/index.html"));
-});
+app.use(express.static(path.join(process.cwd() + "/public")));
+
+// 프론트 끝나고 활성화
+// app.use(express.static(path.join(process.cwd(), "./src/client")));
+// app.get("/*", (req, res) => {
+//   res.sendFile(path.join(process.cwd(), "./src/client/index.html"));
+// });
 
 app.use("/api", apiRoute);
 app.use("/user/api", apiUserRoute);

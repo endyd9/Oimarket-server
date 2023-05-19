@@ -12,27 +12,26 @@ export const itemUpload = async (req, res) => {
   saveImgs.forEach((img, index) => {
     const buffer = Buffer.from(img, "base64");
     fs.writeFileSync(
-      `./uploadimgs/${uploader}-${title}img${index}.png`,
+      `./public/uploadimgs/${uploader}-${title}img${index}.png`,
       buffer
     );
     imgUrl.push(`./uploadimgs/${uploader}-${title}img${index}.png`);
   });
-  console.log(imgUrl);
-    try {
-      const newItem = await Item.create({
-        title,
-        imgUrl,
-        description,
-        hashtags: tags,
-        owner: uploader,
-      });
-      const user = await User.findOne({ _id: uploader });
-      user.item.push(newItem._id);
-      user.save();
-    } catch (error) {
-      console.log(error);
-      return res.sendStatus(403);
-    }
+  try {
+    const newItem = await Item.create({
+      title,
+      imgUrl,
+      description,
+      hashtags: tags,
+      owner: uploader,
+    });
+    const user = await User.findOne({ _id: uploader });
+    user.item.push(newItem._id);
+    user.save();
+  } catch (error) {
+    console.log(error);
+    return res.sendStatus(403);
+  }
 
   res.sendStatus(201);
 };
