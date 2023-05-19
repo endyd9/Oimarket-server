@@ -5,12 +5,11 @@ const itemSchema = new mongoose.Schema({
   imgUrl: [{ type: String }],
   description: {
     type: String,
-    default: "설명이 없누",
     trim: true,
     minLength: 0,
     maxLength: 500,
   },
-  createdAt: { type: Date, required: true, default: Date.now },
+  createdAt: { type: String, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],
   status: { type: Boolean, require: true, default: false },
   owner: { type: mongoose.Schema.Types.ObjectId, require: true, ref: "User" },

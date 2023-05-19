@@ -1,8 +1,9 @@
 import express from "express";
-import { itemUpload } from "../controller/apiItemController.js";
+import { mainPageItems, itemUpload } from "../controller/apiItemController.js";
 
 const apiItemRouter = express.Router();
 
+apiItemRouter.post("/mainItems", mainPageItems);
 apiItemRouter.post("/upload", itemUpload);
 
 export default apiItemRouter;
