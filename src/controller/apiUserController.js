@@ -5,9 +5,10 @@ export const userData = async (req, res) => {
     params: { id },
   } = req;
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id).populate("item");
     res.status(200).json({ user });
   } catch (error) {
+    console.log(error);
     return res.sendStatus(404);
   }
 };

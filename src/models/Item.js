@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Item = mongoose.Schema({
+const itemSchema = new mongoose.Schema({
   title: { type: String, require: true },
   imgUrl: [{ type: String }],
   description: {
@@ -12,7 +12,10 @@ const Item = mongoose.Schema({
   },
   createdAt: { type: Date, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],
+  status: { type: Boolean, require: true, default: false },
   owner: { type: mongoose.Schema.Types.ObjectId, require: true, ref: "User" },
 });
+
+const Item = mongoose.model("Item", itemSchema);
 
 export default Item;

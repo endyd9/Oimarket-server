@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: { type: String, require: true },
   email: { type: String, require: true, unique: true },
   userId: { type: String, require: true, unique: true },
   pass: { type: String, require: true },
   birth: { type: String, require: true },
   phone: { type: String, require: true },
-  item: { type: mongoose.Schema.Types.ObjectId, ref: "Item" },
-  chat: { type: mongoose.Schema.Types.ObjectId, ref: "Chat" },
+  item: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
+  chat: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
 });
 
 userSchema.pre("save", async function () {
