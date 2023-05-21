@@ -43,3 +43,12 @@ export const itemUpload = async (req, res) => {
 
   res.sendStatus(201);
 };
+
+export const getItemInfo = async (req, res) => {
+  const id = req.url.replace("/", "");
+  const item = await Item.findById(id).populate("owner");
+  if (!item) {
+    return res.sendStatus(404);
+  }
+  res.status(200).json({ item });
+};

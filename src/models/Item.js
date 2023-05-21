@@ -8,6 +8,7 @@ const itemSchema = new mongoose.Schema({
     trim: true,
     minLength: 0,
     maxLength: 500,
+    require: true,
   },
   createdAt: { type: String, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],
