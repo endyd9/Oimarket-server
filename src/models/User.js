@@ -8,8 +8,8 @@ const userSchema = new mongoose.Schema({
   pass: { type: String, require: true },
   birth: { type: String, require: true },
   phone: { type: String, require: true },
-  item: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
-  chat: [{ type: mongoose.Schema.Types.ObjectId, ref: "Chat" }],
+  item: [{ type: mongoose.Schema.Types.ObjectId, require:true, ref: "Item" }],
+  chat: [{ type: mongoose.Schema.Types.ObjectId, require:true, ref: "Chat" }],
 });
 
 userSchema.pre("save", async function () {

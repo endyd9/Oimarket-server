@@ -13,6 +13,9 @@ const itemSchema = new mongoose.Schema({
   createdAt: { type: String, required: true, default: Date.now },
   hashtags: [{ type: String, trim: true }],
   status: { type: Boolean, require: true, default: false },
+  meta: {
+    views: { type: Number, require: true, default: 0 },
+  },
   owner: { type: mongoose.Schema.Types.ObjectId, require: true, ref: "User" },
 });
 
