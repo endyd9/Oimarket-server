@@ -15,14 +15,13 @@ export const createRoom = async (req, res) => {
       item: itemid,
       users: [id, id2],
     });
-    const user1 = await User.findById({ id });
-    console.log(user1);
+    const user1 = await User.findById(id);
     user1.chat.push(chat);
-    user1.save();
+    await user1.save();
 
-    const user2 = await User.findById({ id2 });
+    const user2 = await User.findById(id2);
     user2.chat.push(chat);
-    user2.save();
+    await user2.save();
   } catch (e) {
     return res.sendStatus(405);
   }
@@ -30,12 +29,16 @@ export const createRoom = async (req, res) => {
 };
 
 export const getRooms = async (req, res) => {
-  //   const {
-  //     params: { id },
-  //   } = req;
-  //   const user = User.findById({ id }).populate("Chat");
-  //   if (!user) {
-  //     return res.sendStatus(200);
-  //   }
-  //   res.status(200).json({ user });
+  const {
+    params: { id },
+  } = req;
+  //사랑해요 스택오버플로우
+  const user = await User.findById(id).populate({
+    path: "chat",
+    populate: "item",
+  });
+  if (!user) {
+    return res.sendStatus(404);
+  }
+  res.status(200).json({ user });
 };
