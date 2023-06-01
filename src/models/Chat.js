@@ -7,12 +7,6 @@ const chatSchema = new mongoose.Schema({
     {
       type: String,
       trim: true,
-      time: { type: String, required: true, default: Date.now },
-      owner: {
-        type: mongoose.Schema.Types.ObjectId,
-        require: true,
-        ref: "User",
-      },
     },
   ],
 });

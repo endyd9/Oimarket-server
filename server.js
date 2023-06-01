@@ -9,6 +9,7 @@ import apiItemRouter from "./src/router/apiItemRoute.js";
 import "./db.js";
 import path from "path";
 import apiMassageRoute from "./src/router/apiMassageRoute.js";
+import { saveMessages } from "./src/controller/apiMessageController.js";
 
 const dirName = process.cwd();
 const app = express();
@@ -25,24 +26,38 @@ httpServer.listen(process.env.PORT, () =>
 );
 
 //Socket.io 시작
-const ws = new Server(httpServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: "*",
     mathods: ["GET", "POST"],
   },
 });
+let chatLog = [];
+let roomId;
 
-ws.on("connection", (socket) => {
-  console.log("Socket Conneted");
+io.on("connection", async (socket) => {
+  socket["userName"] = socket.handshake.query.userName;
+  roomId = socket.handshake.query.roomId;
+  const isEmpty = io.sockets.adapter.rooms?.get(roomId);
+  socket.join(roomId);
+
   socket.on("send_message", (msg) => {
-    socket.emit("receive_message", msg.message);
+    const message = `${socket["userName"]} : ${msg.message}`;
+    chatLog.push(message);
+    console.log("1", chatLog);
+    socket.to(roomId).emit("receive_message", message);
   });
-  socket.on("user_enter", (user) => {
-    console.log(user);
+  socket.on("disconnect", (done) => {
+    console.log(isEmpty);
+    if (!isEmpty || isEmpty.size === 0) {
+      console.log("비었당");
+      saveMessages(roomId, chatLog);
+      chatLog = [];
+    }
   });
 });
 
-// 프론트 끝나고 활성화
+//프론트 코드 브라우저로 보내기
 // app.use(express.static(path.join(process.cwd(), "./src/client")));
 // app.get("/*", (req, res) => {
 //   res.sendFile(path.join(process.cwd(), "./src/client/index.html"));

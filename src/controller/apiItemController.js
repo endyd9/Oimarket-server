@@ -2,7 +2,6 @@ import fs from "fs";
 import moment from "moment";
 import Item from "../models/Item.js";
 import User from "../models/User.js";
-import { title } from "process";
 
 // 홈화면 아이템 리스트 보내기
 export const mainPageItems = async (req, res) => {
@@ -76,7 +75,7 @@ export const deleteItem = async (req, res) => {
   if (!item) {
     return res.sendStatus(404);
   } else {
-    await Item.findByIdAndDelete(id);
+    await Item.findByIdAndRemove(id);
     return res.sendStatus(201);
   }
 };
@@ -101,7 +100,9 @@ export const getItemInfo = async (req, res) => {
     body: { userId },
     params: { id },
   } = req;
-
+  if (id === undefined) {
+    res.sendStatus(404);
+  }
   const item = await Item.findById(id).populate("owner");
   if (!item) {
     return res.sendStatus(404);
@@ -109,7 +110,7 @@ export const getItemInfo = async (req, res) => {
 
   if (item.owner._id.toString() !== userId) {
     item.meta.views += 1;
-    item.save();
+    await item.save();
   }
   res.status(200).json({ item });
 };

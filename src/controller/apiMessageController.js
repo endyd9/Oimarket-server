@@ -32,7 +32,6 @@ export const getRooms = async (req, res) => {
   const {
     params: { id },
   } = req;
-  //사랑해요 스택오버플로우
   const user = await User.findById(id).populate({
     path: "chat",
     populate: "item",
@@ -41,4 +40,12 @@ export const getRooms = async (req, res) => {
     return res.sendStatus(404);
   }
   res.status(200).json({ user });
+};
+
+export const saveMessages = async (id, chatLog) => {
+  const chat = await Chat.findById(id);
+  chatLog.forEach((log) => {
+    chat.messages.push(log);
+  });
+  chat.save();
 };

@@ -63,5 +63,5 @@ export const login = async (req, res) => {
   if (!ok) {
     return res.sendStatus(403);
   }
-  res.status(200).json({ user: user._id });
+  res.status(200).json({ id: user._id, name:user.name });
 };
