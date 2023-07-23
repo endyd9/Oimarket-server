@@ -2,6 +2,7 @@ import express from "express";
 import {
   itemUpload,
   getItemInfo,
+  countUp,
   editItem,
   deleteItem,
   changeStatus,
@@ -16,5 +17,7 @@ itemRouter
   .patch(editItem)
   .delete(deleteItem)
   .put(changeStatus);
+
+itemRouter.patch("/:id/count", countUp);
 
 export default itemRouter;

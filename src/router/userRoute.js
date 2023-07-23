@@ -10,6 +10,6 @@ const userRoute = express.Router();
 
 userRoute.get("/:id", userPageData);
 userRoute.route("/:id/edit").get(getUserEdit).patch(postUserEdit);
-userRoute.patch("/:id/edit/pwdCheck", PwdCheck);
+userRoute.patch("/:id/edit/pwdcheck", PwdCheck);
 
 export default userRoute;

@@ -41,7 +41,8 @@ export const join = async (req, res) => {
 };
 
 export const idExists = async (req, res) => {
-  const userId = req.body.id;
+  const userId = req.query.id;
+  console.log(userId);
 
   const user = await User.findOne({ userId });
   if (user) {

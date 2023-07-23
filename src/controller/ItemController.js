@@ -97,7 +97,6 @@ export const changeStatus = async (req, res) => {
 // 상품정보 보내기
 export const getItemInfo = async (req, res) => {
   const {
-    body: { userId },
     params: { id },
   } = req;
   if (id === undefined) {
@@ -107,10 +106,25 @@ export const getItemInfo = async (req, res) => {
   if (!item) {
     return res.sendStatus(404);
   }
+  res.status(200).json({ item });
+};
 
-  if (item.owner._id.toString() !== userId) {
+export const countUp = async (req, res) => {
+  const {
+    params: { id },
+  } = req;
+  if (id === undefined) {
+    res.sendStatus(404);
+  }
+  const item = await Item.findById(id).populate("owner");
+  if (!item) {
+    return res.sendStatus(404);
+  }
+  try {
     item.meta.views += 1;
     await item.save();
+    res.sendStatus(200);
+  } catch (e) {
+    res.sendStatus(404);
   }
-  res.status(200).json({ item });
 };

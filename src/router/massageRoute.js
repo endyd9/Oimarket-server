@@ -1,8 +1,9 @@
 import express from "express";
 import { createRoom, getRooms } from "../controller/messageController.js";
 
-const massageRoute = express.Router();
+const messageRoute = express.Router();
 
-massageRoute.get("/:id").get(getRooms).post(createRoom);
+messageRoute.route("/:id").get(getRooms).post(createRoom);
 
-export default massageRoute;
+
+export default messageRoute;

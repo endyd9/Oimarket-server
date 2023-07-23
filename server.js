@@ -8,7 +8,7 @@ import userRoute from "./src/router/userRoute.js";
 import itemRouter from "./src/router/itemRoute.js";
 import "./db.js";
 import path from "path";
-import massageRoute from "./src/router/massageRoute.js";
+import messageRoute from "./src/router/massageRoute.js";
 import { saveMessages } from "./src/controller/messageController.js";
 
 const dirName = process.cwd();
@@ -25,7 +25,7 @@ httpServer.listen(process.env.PORT, () =>
   console.log(`server on prot ${process.env.PORT}`)
 );
 
-//Socket.io 시작
+// Socket.io 시작
 // const io = new Server(httpServer, {
 //   cors: {
 //     origin: "*",
@@ -56,5 +56,5 @@ httpServer.listen(process.env.PORT, () =>
 
 app.use("/user", userRoute);
 app.use("/item", itemRouter);
-app.use("/message", massageRoute);
+app.use("/message", messageRoute);
 app.use("/", rootRoute);
