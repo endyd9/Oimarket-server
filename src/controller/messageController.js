@@ -1,6 +1,7 @@
 import Chat from "../models/Chat.js";
 import User from "../models/User.js";
-
+import { Server } from "socket.io";
+import { httpServer } from "../../server.js";
 //채팅방 생성
 export const createRoom = async (req, res) => {
   const {
@@ -48,4 +49,32 @@ export const saveMessages = async (id, chatLog) => {
     chat.messages.push(log);
   });
   chat.save();
+};
+
+export const startChat = async () => {
+  // const io = new Server(httpServer, {
+  //   cors: {
+  //     origin: "*",
+  //     mathods: ["GET", "POST"],
+  //   },
+  // });
+  // io.on("connection", async (socket) => {
+  //   let chatLog = [];
+  //   const roomId = socket.handshake.query.roomId;
+  //   const isEmpty = io.sockets.adapter.rooms?.get(roomId);
+  //   const userId = socket.handshake.query.userId;
+  //   socket["userName"] = socket.handshake.query.userName;
+  //   socket.join(roomId);
+  //   socket.on("send_message", (msg) => {
+  //     const message = `${msg.message}`;
+  //     chatLog.push([userId, message]);
+  //     socket.to(roomId).emit("receive_message", message);
+  //   });
+  //   socket.on("disconnect", (done) => {
+  //     if (!isEmpty || isEmpty.size === 0) {
+  //       saveMessages(roomId, chatLog);
+  //       chatLog = [];
+  //     }
+  //   });
+  // });
 };
