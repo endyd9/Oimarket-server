@@ -22,6 +22,7 @@ export const getUserEdit = async (req, res) => {
   const { name, email, userId, birth, phone } = user;
   res.status(200).json({ user: { name, email, userId, birth, phone } });
 };
+
 export const postUserEdit = async (req, res) => {
   const {
     body: { name, phone },
@@ -42,6 +43,7 @@ export const PwdCheck = async (req, res) => {
 
   const user = await User.findById(id);
   const compere = await bcrypt.compare(pwd, user.pass);
+
   if (!compere) {
     return res.sendStatus(403);
   }

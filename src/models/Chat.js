@@ -4,10 +4,17 @@ const chatSchema = new mongoose.Schema({
   item: { type: mongoose.Schema.Types.ObjectId, require: true, ref: "Item" },
   users: [{ type: mongoose.Schema.Types.ObjectId, require: true, ref: "User" }],
   messages: [
-    {
-      type: String,
-      trim: true,
-    },
+    [
+      {
+        type: String,
+        trim: true,
+      },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        require: true,
+        ref: "User",
+      },
+    ],
   ],
 });
 

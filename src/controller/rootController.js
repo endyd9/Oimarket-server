@@ -5,15 +5,15 @@ import bycrpt from "bcrypt";
 //상품 검색
 export const searchResult = async (req, res) => {
   //키워드가 포함된 모든 상품
-  const keyword = new RegExp(
-    `${decodeURIComponent(req.url.replace("/search/", ""))}`,
-    "i"
-  );
-  console.log(keyword);
-  const item = await Item.find({
-    $or: [{ title: keyword }, { description: keyword }],
-  }).sort({ createdAt: "desc" });
-  res.status(200).json({ item });
+  try {
+    const keyword = new RegExp(`${req.query.keyword}`, "i");
+    const item = await Item.find({
+      $or: [{ title: keyword }, { description: keyword }],
+    }).sort({ createdAt: "desc" });
+    res.status(200).json({ item });
+  } catch {
+    return res.sendStatus(404);
+  }
 };
 
 export const join = async (req, res) => {
@@ -63,5 +63,5 @@ export const login = async (req, res) => {
   if (!ok) {
     return res.sendStatus(403);
   }
-  res.status(200).json({ id: user._id, name:user.name });
+  res.status(200).json({ id: user._id, name: user.name });
 };
