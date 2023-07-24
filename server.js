@@ -15,7 +15,16 @@ const dirName = process.cwd();
 const app = express();
 export const httpServer = http.createServer(app);
 
-app.use(cors({ origin: "https://endyd9.github.io/OiMarket-client/" }));
+app.use(
+  cors({
+    origin: [
+      "https://endyd9.github.io/OiMarket-client/",
+      "http://localhost:3000",
+      "https://endyd9.github.io",
+    ],
+    credentials: true,
+  })
+);
 
 // app.use((req, res, next) => {
 //   res.header("Cross-Origin-Embedder-Policy", "credentialless");
