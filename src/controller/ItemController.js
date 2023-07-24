@@ -18,14 +18,19 @@ export const itemUpload = async (req, res) => {
   //img디코딩 후 저장
   const saveImgs = [...incodingImg.toString().split(",")];
   const imgUrl = [];
-  saveImgs.forEach((img, index) => {
-    const buffer = Buffer.from(img, "base64");
-    fs.writeFileSync(
-      `./public/uploadimgs/${uploader}-${title}img${index}.png`,
-      buffer
-    );
-    imgUrl.push(`./uploadimgs/${uploader}-${title}img${index}.png`);
-  });
+  //에러는 여기였구연
+  try {
+    saveImgs.forEach((img, index) => {
+      const buffer = Buffer.from(img, "base64");
+      fs.writeFileSync(
+        `./public/uploadimgs/${uploader}-${title}img${index}.png`,
+        buffer
+      );
+      imgUrl.push(`./uploadimgs/${uploader}-${title}img${index}.png`);
+    });
+  } catch (e) {
+    res.status(200).json({ error: "이미지 생성 오류" });
+  }
   try {
     const createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const newItem = await Item.create({

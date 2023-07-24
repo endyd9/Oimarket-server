@@ -11,16 +11,15 @@ import messageRoute from "./src/router/massageRoute.js";
 import { saveMessages } from "./src/controller/messageController.js";
 import cors from "cors";
 
-const dirName = process.cwd();
 const app = express();
 export const httpServer = http.createServer(app);
 
 app.use(
   cors({
     origin: [
-      "https://endyd9.github.io/OiMarket-client/",
       "http://localhost:3000",
       "https://endyd9.github.io",
+      "https://endyd9.github.io/OiMarket-client/",
     ],
     credentials: true,
   })
@@ -28,12 +27,16 @@ app.use(
 
 // app.use((req, res, next) => {
 //   res.header("Cross-Origin-Embedder-Policy", "credentialless");
-//   res.header("Cross-Origin-Opener-Policy", "same-origin");
+//   res.header("Access-Control-Allow-Origin", [
+//     "http://localhost:3000/",
+//     "https://endyd9.github.io/OiMarket-client/",
+//     "https://endyd9.github.io/",
+//   ]);
 //   next();
 // });
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ limit: "100mb" }));
+app.use(express.json({ limit: "30mb" }));
 
 app.use(express.static(path.join(process.cwd() + "/public")));
 
