@@ -54,16 +54,21 @@ export const editItem = async (req, res) => {
     params: { id },
   } = req;
 
-  const item = await Item.findById(id);
-  if (!item) {
+  try {
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.sendStatus(404);
+    }
+
+    item.title = title;
+    item.description = description;
+    item.hashtags = tags;
+    item.save();
+    res.sendStatus(201);
+  } catch (e) {
+    console.log(e);
     return res.sendStatus(404);
   }
-
-  item.title = title;
-  item.description = description;
-  item.hashtags = tags;
-  item.save();
-  res.sendStatus(201);
 };
 
 // 상품 삭제
@@ -71,12 +76,17 @@ export const deleteItem = async (req, res) => {
   const {
     params: { id },
   } = req;
-  const item = await Item.findById(id);
-  if (!item) {
+  try {
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.sendStatus(404);
+    } else {
+      await Item.findByIdAndRemove(id);
+      return res.sendStatus(201);
+    }
+  } catch (e) {
+    console.log(e);
     return res.sendStatus(404);
-  } else {
-    await Item.findByIdAndRemove(id);
-    return res.sendStatus(201);
   }
 };
 
@@ -85,13 +95,18 @@ export const changeStatus = async (req, res) => {
   const {
     params: { id },
   } = req;
-  const item = await Item.findById(id);
-  if (!item) {
+  try {
+    const item = await Item.findById(id);
+    if (!item) {
+      return res.sendStatus(404);
+    }
+    item.status ? (item.status = false) : (item.status = true);
+    item.save();
+    res.sendStatus(201);
+  } catch (e) {
+    console.log(e);
     return res.sendStatus(404);
   }
-  item.status ? (item.status = false) : (item.status = true);
-  item.save();
-  res.sendStatus(201);
 };
 
 // 상품정보 보내기
@@ -102,11 +117,15 @@ export const getItemInfo = async (req, res) => {
   if (id === undefined) {
     res.sendStatus(404);
   }
-  const item = await Item.findById(id).populate("owner");
-  if (!item) {
+  try {
+    const item = await Item.findById(id).populate("owner");
+    if (!item) {
+      return res.sendStatus(404);
+    }
+    res.status(200).json({ item });
+  } catch (e) {
     return res.sendStatus(404);
   }
-  res.status(200).json({ item });
 };
 
 export const countUp = async (req, res) => {
@@ -116,11 +135,11 @@ export const countUp = async (req, res) => {
   if (id === undefined) {
     res.sendStatus(404);
   }
-  const item = await Item.findById(id).populate("owner");
-  if (!item) {
-    return res.sendStatus(404);
-  }
   try {
+    const item = await Item.findById(id).populate("owner");
+    if (!item) {
+      return res.sendStatus(404);
+    }
     item.meta.views += 1;
     await item.save();
     res.sendStatus(200);

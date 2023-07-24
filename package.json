@@ -4,6 +4,7 @@
   "description": "Joongo Server",
   "scripts": {
     "dev": "nodemon node server.js",
+    "predeploy": "babel src -d build",
     "deploy": "fly deploy"
   },
   "keywords": [],
@@ -23,6 +24,8 @@
   },
   "type": "module",
   "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
     "@flydotio/dockerfile": "^0.3.3"
   }
 }

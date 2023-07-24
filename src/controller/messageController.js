@@ -33,22 +33,32 @@ export const getRooms = async (req, res) => {
   const {
     params: { id },
   } = req;
-  const user = await User.findById(id).populate({
-    path: "chat",
-    populate: "item",
-  });
-  if (!user) {
+  try {
+    const user = await User.findById(id).populate({
+      path: "chat",
+      populate: "item",
+    });
+    if (!user) {
+      return res.sendStatus(404);
+    }
+    res.status(200).json({ user });
+  } catch (e) {
+    console.log(e);
     return res.sendStatus(404);
   }
-  res.status(200).json({ user });
 };
 
 export const saveMessages = async (id, chatLog) => {
-  const chat = await Chat.findById(id);
-  chatLog.forEach((log) => {
-    chat.messages.push(log);
-  });
-  chat.save();
+  try {
+    const chat = await Chat.findById(id);
+    chatLog.forEach((log) => {
+      chat.messages.push(log);
+    });
+    chat.save();
+  } catch (e) {
+    console.log(e);
+    return res.sendStatus(404);
+  }
 };
 
 export const startChat = async () => {

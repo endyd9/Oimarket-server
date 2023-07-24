@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import http from "http";
 import { Server } from "socket.io";
-import cors from "cors";
 import rootRoute from "./src/router/rootRoute.js";
 import userRoute from "./src/router/userRoute.js";
 import itemRouter from "./src/router/itemRoute.js";
@@ -10,12 +9,20 @@ import "./db.js";
 import path from "path";
 import messageRoute from "./src/router/massageRoute.js";
 import { saveMessages } from "./src/controller/messageController.js";
+import cors from "cors";
 
 const dirName = process.cwd();
 const app = express();
 export const httpServer = http.createServer(app);
 
-app.use(cors());
+app.use(cors({ origin: "https://endyd9.github.io/OiMarket-client/" }));
+
+// app.use((req, res, next) => {
+//   res.header("Cross-Origin-Embedder-Policy", "credentialless");
+//   res.header("Cross-Origin-Opener-Policy", "same-origin");
+//   next();
+// });
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "100mb" }));
 
