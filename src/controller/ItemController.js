@@ -1,4 +1,3 @@
-import fs from "fs";
 import moment from "moment";
 import Item from "../models/Item.js";
 import User from "../models/User.js";
@@ -13,24 +12,20 @@ export const mainPageItems = async (req, res) => {
 // 상품 업로드
 export const itemUpload = async (req, res) => {
   const {
-    body: { uploader, title, incodingImg, description, tags },
+    body: { title, description, tag, uploader },
   } = req;
-  //img디코딩 후 저장
-  const saveImgs = [...incodingImg.toString().split(",")];
+  const {
+    files: { images },
+  } = req;
+
   const imgUrl = [];
-  //에러는 여기였구연
-  try {
-    saveImgs.forEach((img, index) => {
-      const buffer = Buffer.from(img, "base64");
-      fs.writeFileSync(
-        `./public/uploadimgs/${uploader}-${title}img${index}.png`,
-        buffer
-      );
-      imgUrl.push(`./uploadimgs/${uploader}-${title}img${index}.png`);
-    });
-  } catch (e) {
-    res.status(200).json({ error: "이미지 생성 오류" });
-  }
+
+  [...images].forEach((img) => {
+    imgUrl.push(img.location);
+  });
+
+  const tags = [...tag.split(",")];
+
   try {
     const createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const newItem = await Item.create({
@@ -44,12 +39,49 @@ export const itemUpload = async (req, res) => {
     const user = await User.findOne({ _id: uploader });
     user.item.push(newItem._id);
     user.save();
-  } catch (error) {
-    console.log(error);
+    return res.sendStatus(201);
+  } catch (e) {
+    console.log(e);
     return res.sendStatus(403);
   }
 
-  res.sendStatus(201);
+  //구 코드
+  // img디코딩 후 저장
+  // const saveImgs = [...incodingImg.toString().split(",")];
+  // const imgUrl = [];
+  // try {
+  //   saveImgs.forEach((img, index) => {
+  //     const buffer = Buffer.from(img, "base64");
+  //     console.log(buffer);
+  //     throw error();
+  //     // fs.writeFileSync(
+  //     //   `./public/uploadimgs/${uploader}-${title}img${index}.png`,
+  //     //   buffer
+  //     // );
+  //     // imgUrl.push(`./uploadimgs/${uploader}-${title}img${index}.png`);
+  //   });
+  // } catch (e) {
+  //   res.status(200).json({ error: "이미지 생성 오류" });
+  // }
+  // try {
+  //   const createdAt = moment().format("YYYY-MM-DD HH:mm:ss");
+  //   const newItem = await Item.create({
+  //     title,
+  //     imgUrl,
+  //     description: description === "" ? "설명이 없누" : description,
+  //     hashtags: tags,
+  //     createdAt,
+  //     owner: uploader,
+  //   });
+  //   const user = await User.findOne({ _id: uploader });
+  //   user.item.push(newItem._id);
+  //   user.save();
+  // } catch (error) {
+  //   console.log(error);
+  //   return res.sendStatus(403);
+  // }
+
+  // res.sendStatus(201);
 };
 
 // 상품 수정

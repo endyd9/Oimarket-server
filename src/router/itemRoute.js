@@ -7,10 +7,13 @@ import {
   deleteItem,
   changeStatus,
 } from "../controller/ItemController.js";
+import { fileUploader } from "../../imageUploader.js";
 
 const itemRouter = express.Router();
 
-itemRouter.post("/upload", itemUpload);
+itemRouter
+  .route("/upload")
+  .post(fileUploader.fields([{ name: "images" }]), itemUpload);
 itemRouter
   .route("/:id")
   .get(getItemInfo)
