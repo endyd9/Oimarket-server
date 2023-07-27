@@ -26,8 +26,8 @@ PATCH`/:id/edit` "유저 정보 수정"✅
 PATCH`/:id/pwdcheck` "비밀번호 변경 요청"✅  
 
 ### message
-GET`/:id` "유저가 가진 채팅방 목록"  
-POST`/:id` "채팅방 생성"     
+GET`/:id` "유저가 가진 채팅방 목록"✅  
+POST`/:id` "채팅방 생성"✅     
 
 
 ## 사용기술
