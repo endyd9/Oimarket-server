@@ -17,7 +17,7 @@ const s3Uploader = multerS3({
 
 export const fileUploader = multer({
   limits: {
-    fileSize: 100000,
+    fileSize: 50 * 1024 * 1024,
   },
   storage: s3Uploader,
 });
