@@ -27,7 +27,7 @@ GET`/join/idcheck` "아이디 중복확인"✅
 POST`/login` "로그인 요청"✅  
 
 ### item
-POST`/upload` "상품 업로드 요청"❌(이미지 저장 에러)  
+POST`/upload` "상품 업로드 요청"✅
 GET`/:id` "상품 정보 요청"✅  
 DELETE`/:id` "상품 삭제 요청"✅  
 PATCH`/:id` "상품 수정 요청"✅  
@@ -56,3 +56,13 @@ PATCH`/:id/pwdcheck` "비밀번호 변경 요청"
 ### message
 GET`/:id` "유저가 가진 채팅방 목록"  
 POST`/:id` "채팅방 생성"  
+
+
+## 사용기술
+Language: `JavaScript(Node.js@20.4.0)`  
+Server: `ExpressJS @4.18.2`  
+DB: `mongoose@7.1.1`  
+#### Deploy
+Server: `Fly.io`  
+DB: `Mongo Atlas`  
+Storage: `AWS S3`  
